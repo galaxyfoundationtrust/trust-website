@@ -21,7 +21,7 @@ export const uploadImage = async (req, res) => {
       });
       await newImage.save();
 
-      res.status(200).json({ message: "Image uploaded successfully", url: result.secure_url });
+      res.status(200).json({ message: "Image uploaded successfully", url: result.secure_url});
     }).end(req.file.buffer);
   } catch (error) {
     res.status(500).json({ error: error.message });
