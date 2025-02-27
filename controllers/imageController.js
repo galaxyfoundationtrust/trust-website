@@ -59,7 +59,7 @@ export const deleteImage = async (req, res) => {
 
     // Delete image document from MongoDB
     await Image.findByIdAndDelete(imageId);
-    res.status(200).json({ message: "Image deleted successfully" });
+    return res.status(200).json({ message: "Image deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
