@@ -15,7 +15,10 @@ export const uploadImage = async (req, res) => {
       }
 
       // Save image URL in MongoDB
-      const newImage = new Image({ imageUrl: result.secure_url });
+      const newImage = new Image({
+        imageUrl: result.secure_url,
+        publicId: result.public_id, // Store public_id for deletion
+      });
       await newImage.save();
 
       res.status(200).json({ message: "Image uploaded successfully", url: result.secure_url });
@@ -48,7 +51,10 @@ export const deleteImage = async (req, res) => {
     // If you've stored Cloudinary's public_id when uploading, delete from Cloudinary first.
     // For example, if you stored it as image.publicId:
     if (image.publicId) {
-      await cloudinary.uploader.destroy(image.publicId);
+      const cloudinaryResponse = await cloudinary.uploader.destroy(image.publicId);
+      if (cloudinaryResponse.result !== "ok") {
+        return res.status(500).json({ error: "Failed to delete image from Cloudinary" });
+      }
     }
 
     // Delete image document from MongoDB
