@@ -19,5 +19,9 @@ app.use(
 );
 // Routes
 
+app.get('/', async(req, res)=>{
+  res.send("Server is working")
+})
+
 app.use("/api/users",authRoute);
 app.use("/api", imageRoute)
